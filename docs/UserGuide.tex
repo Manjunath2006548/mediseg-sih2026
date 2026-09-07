@@ -1,0 +1,404 @@
+%===========================================================
+%  MediSeg — User Guide
+%  Smart Mobile Medical-Waste Collection & Segregation System
+%  Autodesk · Smart India Hackathon 2026
+%
+%  Compile:  pdflatex UserGuide.tex
+%===========================================================
+\documentclass[11pt, a4paper]{article}
+
+%------------- Packages --------------
+\usepackage[margin=2.4cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[colorlinks=true, linkcolor=teal!75!black, urlcolor=teal!75!black]{hyperref}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec}
+
+%------------- Colours --------------
+\definecolor{mediseg}{HTML}{14b8a6}      % teal
+\definecolor{medisegdark}{HTML}{0f766e}  % deep teal
+\definecolor{slate}{HTML}{334155}
+\definecolor{codebg}{HTML}{f1f5f9}
+
+%------------- Page style --------------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{mediseg}{\textbf{MediSeg -- User Guide}}}
+\fancyhead[R]{\small\textcolor{slate}{SIH 2026 \textperiodcentered\ Autodesk}}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\headrulecolor{mediseg!60!white}
+
+%------------- Section titles --------------
+\titleformat{\section}
+  {\Large\bfseries\color{medisegdark}}
+  {\thesection}{0.8em}{}
+\titleformat{\subsection}
+  {\large\bfseries\color{slate}}
+  {\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}
+  {\normalsize\bfseries}
+  {\thesubsubsection}{0.6em}{}
+
+%------------- Listing style --------------
+\lstdefinestyle{cmd}{
+  language=bash,
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{medisegdark}\bfseries,
+  commentstyle=\color{gray},
+  showstringspaces=false,
+  frame=single,
+  rulecolor=\color{mediseg!30!white},
+  breaklines=true,
+  columns=fullflexible
+}
+
+%------------- Boxes --------------
+\newtcolorbox{tipbox}{
+  colback=teal!8!white, colframe=mediseg,
+  title=\textbf{Note}, fonttitle=\bfseries, arc=3pt, boxrule=0.8pt
+}
+\newtcolorbox{warnbox}{
+  colback=orange!8!white, colframe=orange!85!black,
+  title=\textbf{Important}, fonttitle=\bfseries, arc=3pt, boxrule=0.8pt
+}
+
+%===========================================================
+\begin{document}
+
+%------------- Title --------------
+\begin{titlepage}
+\centering
+\vspace*{2.5cm}
+
+{\color{teal!50!white}\rule{\textwidth}{1pt}}\\[0.8em]
+{\Huge\bfseries\textcolor{mediseg}{MediSeg}}\\[0.5em]
+{\LARGE Smart Mobile Medical-Waste\\[0.3em] Collection \& Segregation System}\\[1.2em]
+{\color{teal!50!white}\rule{\textwidth}{1pt}}\\[2.5em]
+
+{\large \textbf{User Guide}}\\[1.2em]
+{\large Web Application \textperiodcentered\ Interactive Prototype}\\[3em]
+
+\begin{minipage}{0.75\textwidth}
+\centering
+\small
+Autodesk \textperiodcentered\ Smart India Hackathon 2026\\
+Repo: \url{https://github.com/Manjunath2006548/mediseg-sih2026}\\
+Live: \url{https://mediseg-sih2026.vercel.app}
+\end{minipage}
+
+\vfill
+{\small Version 1.0 \textperiodcentered\ September 2026}
+\end{titlepage}
+
+%------------- TOC --------------
+\tableofcontents
+\clearpage
+
+%===========================================================
+\section{Introduction}
+
+\textbf{MediSeg} is a web-based solution for the Autodesk problem statement
+\textit{``Design a Smart Mobile Medical-Waste Collection and Segregation System''}.
+Hospital bio-medical waste is hazardous to handle; when mis-segregated it is
+either incinerated incorrectly or leaks into the environment. MediSeg replaces
+manual pushcarts with an \emph{autonomous mobile rover} that:
+
+\begin{itemize}[leftmargin=1.6em, itemsep=2pt]
+  \item navigates hospital zones autonomously (LiDAR-based patrol),
+  \item recognises waste bags with an on-board AI camera (YOLOv8-style model, ~98\,\%),
+  \item drops each bag into the correct BMWM 2018 colour-coded compartment, and
+  \item records a full QR chain-of-custody for regulatory compliance.
+\end{itemize}
+
+This guide walks through the delivered web prototype: the login flow, the four
+pages of the application, the interactive simulation, and deployment.
+
+\subsection{What is provided}
+\begin{tabularx}{\textwidth}{lX}
+  \toprule
+  \textbf{Item} & \textbf{Detail}\\
+  \midrule
+  Web application & Next.js static export (no backend required)\\
+  Interactive prototype & Autonomous patrol \& AI scanner simulator\\
+  Concept deck & Problem-solution presentation slides\\
+  GitHub repository & \url{https://github.com/Manjunath2006548/mediseg-sih2026}\\
+  Live deployment & \url{https://mediseg-sih2026.vercel.app}\\
+  \bottomrule
+\end{tabularx}
+
+%===========================================================
+\section{System Requirements}
+
+\begin{tabularx}{\textwidth}{lX}
+  \toprule
+  \textbf{Category} & \textbf{Requirement}\\
+  \midrule
+  Operating system & Windows / macOS / Linux (any modern browser)\\
+  Browser & Chrome 100+, Edge, Firefox, Safari (latest)\\
+  Screen & Desktop recommended for full prototype experience\\
+  JavaScript & Enabled (the app runs entirely in the browser)\\
+  Internet & Needed only for first page load (Google Fonts) and hosting\\
+  Node.js (developers) & Node 18+ to build locally ($\ge$ 18.17 recommended)\\
+  \bottomrule
+\end{tabularx}
+
+\begin{tipbox}
+The prototype runs fully client-side. No backend, database, or API key is
+required, so it works offline once the page is loaded.
+\end{tipbox}
+
+%===========================================================
+\section{Getting Started (End User)}
+\label{sec:getstarted}
+
+\subsection{Accessing the application}
+\begin{enumerate}[leftmargin=1.6em, itemsep=2pt]
+  \item Open \url{https://mediseg-sih2026.vercel.app} in a browser.
+  \item The \textbf{portal page} loads and shows the project overview plus four
+        cards: \textit{Introduction}, \textit{Sign In / Register},
+        \textit{Working Prototype}, and \textit{Concept Deck}.
+  \item Click any card, or use \textbf{Launch Simulation} to go straight to the
+        prototype.
+\end{enumerate}
+
+\subsection{Registration}
+\begin{enumerate}[leftmargin=1.6em, itemsep=2pt]
+  \item Navigate to the \textbf{Sign In / Register} card.
+  \item Switch to the \textbf{Register} tab.
+  \item Enter a name, a valid email, and a password. The password must satisfy
+        the \textbf{strong-password policy}:
+\end{enumerate}
+\begin{itemize}[leftmargin=1.6em, itemsep=2pt]
+  \item at least 8 characters,
+  \item at least one uppercase letter,
+  \item at least one lowercase letter,
+  \item at least one digit,
+  \item at least one special character.
+\end{itemize}
+A live \textbf{strength meter} and a per-rule checklist show progress as you
+type. Weak passwords are rejected with a clear message.
+
+\subsection{Signing in}
+\begin{enumerate}[leftmargin=1.6em, itemsep=2pt]
+  \item Enter the email and password you registered with (any valid credentials
+        are accepted in this demo).
+  \item On success you are taken to the prototype with a personalised header.
+  \item Your session is stored locally in the browser and persists across
+        reloads.
+\end{enumerate}
+
+\begin{warnbox}
+This is a prototype, so credentials are validated in the browser only.
+Replace the client-side check with a real authentication service for
+production use.
+\end{warnbox}
+
+%===========================================================
+\section{Application Pages}
+
+\begin{tabularx}{\textwidth}{lX}
+  \toprule
+  \textbf{Route} & \textbf{Purpose}\\
+  \midrule
+  |/| & High-level portal linking all sections\\
+  |/mediseg/intro| & Problem background, impact, architecture\\
+  |/mediseg/login| & Login / registration with strong-password check\\
+  |/mediseg| & \textbf{Main interactive prototype} (login required)\\
+  |/mediseg/presentation| & Concept deck (presentation slides)\\
+  \bottomrule
+\end{tabularx}
+
+\subsection{Portal (|/|)}
+Default landing page. Contains the project tagline, module summaries
+(A: Navigation \& Collection, B: AI Recognition \& Segregation) and the
+all-in-one portal cards that link to every part of the demonstration.
+
+\subsection{Introduction (|/mediseg/intro|)}
+Explains the problem statement: the hazards of improper medical-waste handling,
+the biomedical-waste rules, why manual segregation is unsafe, and how the
+rover-based pipeline works end to end.
+
+\subsection{Authentication (|/mediseg/login|)}
+Handles login and registration as described in
+Section~\ref{sec:getstarted}.
+
+\subsection{Concept Deck (|/mediseg/presentation|)}
+A slide-style presentation covering problem context, proposed solution,
+system design, methodology, and expected outcomes. Use the section anchors or
+page down through the deck.
+
+%===========================================================
+\section{The Interactive Prototype}
+
+The core of the demonstration is the prototype at \url{/mediseg}. It simulates
+the complete collection-and-segregation workflow in four linked panels.
+
+\subsection{Robot View \textperiodcentered\ Autonomous Patrol}
+\begin{itemize}[leftmargin=1.6em, itemsep=2pt]
+  \item An \textbf{SVG floor plan} represents the hospital layout with a patrol
+        route and waste drop points.
+  \item The rover \textbf{moves along the patrol path} automatically, stopping
+        at each depot to collect a generated waste bag.
+  \item \textbf{Obstacle avoidance} is simulated -- the rover steers around
+        obstacles on the map.
+  \item Use the \textbf{speed slider} to slow down or speed up the simulation,
+        and toggle \textbf{auto-run} to pause/resume.
+\end{itemize}
+
+\subsection{AI Scanner \textperiodcentered\ Waste Recognition}
+\begin{itemize}[leftmargin=1.6em, itemsep=2pt]
+  \item A simulated \textbf{camera feed} displays the bag currently being
+        inspected, overlaid with a detection bounding box.
+  \item The model reports the \textbf{category} (e.g.\ yellow bag), a
+        \textbf{confidence score}, and a simulated \textbf{accuracy of 98\,\%}.
+  \item When no bag is present the camera shows an \textbf{idle state}
+        (``Camera Live -- Awaiting Waste Intake'') with a
+        \textbf{Generate Waste Now} button to spawn a new bag.
+\end{itemize}
+
+\subsection{Segregation \textperiodcentered\ BMWM 2018 Compartments}
+\begin{itemize}[leftmargin=1.6em, itemsep=2pt]
+  \item Five \textbf{colour-coded compartments} match the Bio-Medical Waste
+        (Management)\ Rules 2018 categories.
+  \item The sorting mechanism delivers each recognised bag into the correct
+        compartment automatically.
+  \item Fill levels animate as bags are dropped, giving a clear visual summary.
+\end{itemize}
+
+\subsection{Tracking Ledger \textperiodcentered\ Compliance Report}
+\begin{itemize}[leftmargin=1.6em, itemsep=2pt]
+  \item Every recognised bag receives a \textbf{QR-style record ID}.
+  \item The \textbf{ledger table} logs: timestamp, bag ID, detected category,
+        assigned compartment, confidence, and collection status.
+  \item A real-time \textbf{compliance report} computes the percentage of bags
+        segregated correctly and highlights any mis-segregation.
+\end{itemize}
+
+\subsection{Controls and Session}
+\begin{itemize}[leftmargin=1.6em, itemsep=2pt]
+  \item \textbf{Battery indicator} simulates charge level and recharging cycles.
+  \item \textbf{Logout} clears the local session and returns to the login page.
+  \item The header shows the currently signed-in user.
+\end{itemize}
+
+%===========================================================
+\section{Running a Demo Session (Scenario)}
+
+Follow this script for a clean 2-minute demo:
+
+\begin{enumerate}[leftmargin=1.6em, itemsep=3pt]
+  \item Login to the prototype (Section~\ref{sec:getstarted}).
+  \item On \textbf{Robot View}, press \emph{auto-run} -- the rover departs on
+        its patrol route and reaches the first depot.
+  \item Point out the \textbf{camera feed}: a bag appears, the model draws a
+        bounding box and announces the category and confidence.
+  \item Watch the bag slide into the correct \textbf{coloured compartment}
+        and the compartment fill level rise.
+  \item Open the \textbf{tracking ledger} and show a generated record (bag ID,
+        category, compartment).
+  \item Show the \textbf{compliance report} -- with correct segregation the
+        score is 100\,\%; drop a mis-sorted bag to demonstrate the warning.
+  \item Mention the \textbf{speed slider} as a stand-in for real-time telemetry.
+\end{enumerate}
+
+%===========================================================
+\section{Developer Guide}
+
+\subsection{Folder layout}
+\begin{lstlisting}[style=cmd]
+mediseg-sih2026/
+|-- app/
+|   |-- page.js                  # portal (landing)
+|   |-- layout.js                # root layout + metadata
+|   |-- globals.css              # Tailwind + custom utilities
+|   `-- mediseg/
+|       |-- page.js              # interactive prototype
+|       |-- intro/page.js        # introduction page
+|       |-- login/page.js        # login / register
+|       `-- presentation/page.js # concept deck
+|-- public/
+|   `-- images/mediseg-bg.svg    # themed background
+|-- next.config.js               # static export config
+|-- tailwind.config.js
+`-- package.json
+\end{lstlisting}
+
+\subsection{Local development}
+\begin{lstlisting}[style=cmd]
+npm install      # install dependencies
+npm run dev      # start dev server on http://localhost:3000
+\end{lstlisting}
+
+\subsection{Production build}
+\begin{lstlisting}[style=cmd]
+npm run build    # static export written to ./out
+\end{lstlisting}
+
+\begin{tipbox}
+The pipeline is fully static (\texttt{output: 'export'}). The generated
+\texttt{out/} directory can be hosted by any static file server.
+\end{tipbox}
+
+\subsection{Deploy to Vercel}
+\begin{lstlisting}[style=cmd]
+vercel --prod --yes
+\end{lstlisting}
+After the first deployment the project is linked, so subsequent deploys are
+just \texttt{vercel --prod}. Alternatively, connect the GitHub repository and
+enable auto-deploy on push.
+
+\subsection{Deploy to any static host}
+Since the build output is plain HTML/CSS/JS:
+\begin{enumerate}[leftmargin=1.6em, itemsep=2pt]
+  \item run \texttt{npm run build},
+  \item upload the contents of \texttt{out/} to Netlify, GitHub Pages,
+        or an Nginx/S3 bucket.
+\end{enumerate}
+
+%===========================================================
+\section{Troubleshooting}
+
+\begin{tabularx}{\textwidth}{lX}
+  \toprule
+  \textbf{Symptom} & \textbf{Resolution}\\
+  \midrule
+  Page shows stale version & Hard-refresh (Ctrl+F5 / Cmd+Shift+R).\\
+  Login does not persist & Your browser blocks \texttt{localStorage}; allow
+  site data or try another browser.\\
+  Prototype ``locked'' & You are not signed in. Register or sign in, then open
+  the prototype again.\\
+  Robot not moving & Ensure \emph{auto-run} is enabled and raise the speed
+  slider.\\
+  Scanner shows idle & Expected idling state; press \textbf{Generate Waste Now}
+  to inject a bag.\\
+  Weak-password error & Password violates one of the five rules
+  (Section~\ref{sec:getstarted}); use the checklist.\\
+  Deployment not updating & Run \texttt{vercel --prod --yes} from the
+  repository root after rebuilding.\\
+  \bottomrule
+\end{tabularx}
+
+%===========================================================
+\section{Credits}
+
+\begin{itemize}[leftmargin=1.6em, itemsep=2pt]
+  \item \textbf{Team:} Manjunath Hebbar and collaborators
+        (\texttt{Manjunath2006548} on GitHub).
+  \item \textbf{Organisers:} Smart India Hackathon 2026 \textperiodcentered\
+        Autodesk.
+  \item \textbf{Regulatory basis:} Bio-Medical Waste (Management) Rules, 2018.
+  \item \textbf{Stack:} Next.js 14, React 18, Tailwind CSS, Vercel.
+\end{itemize}
+
+\end{document}

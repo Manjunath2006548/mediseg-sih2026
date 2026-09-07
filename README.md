@@ -14,6 +14,9 @@ BMWM 2018 colour segregation with full chain-of-custody traceability.
 | `/mediseg`                  | Interactive working prototype (autonomous simulator) |
 | `/mediseg/presentation`     | Concept deck (presentation slides)                   |
 
+
+https://mediseg-sih2026.vercel.app/
+
 ## Features
 
 - Autonomous patrol simulation on a facility floor plan (A* style waypoints, obstacle avoidance)

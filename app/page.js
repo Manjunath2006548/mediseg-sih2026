@@ -80,9 +80,9 @@ export default function Home() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/mediseg"
+              <Link href="/mediseg/login"
                 className="px-8 py-4 bg-gradient-to-r from-teal-500 to-emerald-600 text-white font-semibold rounded-xl hover:opacity-90 transition-all shadow-xl shadow-teal-500/30 text-base">
-                Launch Simulation →
+                Login to Launch →
               </Link>
               <a href="#modules"
                 className="px-8 py-4 border border-white/10 text-gray-300 font-medium rounded-xl hover:bg-white/5 transition-all text-base">
@@ -140,26 +140,24 @@ export default function Home() {
               <div>
                 <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-teal-400/30 bg-teal-500/10 text-teal-300 text-xs font-medium mb-4">
                   <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
-                  All-In-One Project Portal
+                  Secure Access
                 </div>
-                <h2 className="text-3xl md:text-4xl font-black tracking-tight text-white">Explore Everything</h2>
+                <h2 className="text-3xl md:text-4xl font-black tracking-tight text-white">Launch the System</h2>
                 <p className="text-gray-400 mt-3 max-w-2xl leading-relaxed">
-                  From the problem introduction and secure authentication to the interactive working
-                  prototype and full concept deck — the complete solution in one place.
+                  Sign in to access the interactive working prototype. The interactive simulator is
+                  only available to authenticated users.
                 </p>
               </div>
-              <Link href="/mediseg"
+              <Link href="/mediseg/login"
                 className="px-6 py-3 text-sm font-semibold bg-gradient-to-r from-teal-500 to-emerald-600 text-white rounded-xl hover:opacity-90 transition-all shadow-lg shadow-teal-500/25 whitespace-nowrap">
-                Launch Prototype →
+                Sign In to Continue →
               </Link>
             </div>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <div className="grid sm:grid-cols-2 gap-5 max-w-4xl mx-auto">
               {[
-                { step: '01', title: 'Introduction', desc: 'Problem context, impact of unsafe medical waste, and complete system architecture.', href: '/mediseg/intro' },
-                { step: '02', title: 'Sign In / Register', desc: 'Secure portal with strong password validation, live strength meter, and sessions.', href: '/mediseg/login' },
-                { step: '03', title: 'Working Prototype', desc: 'Interactive simulator — patrol, AI scanner (98%), BMWM 2018 segregation, tracking ledger.', href: '/mediseg' },
-                { step: '04', title: 'Concept Deck', desc: 'Slide deck covering the SIH problem statement, methodology, and expected outcomes.', href: '/mediseg/presentation' }
+                { step: '01', title: 'Sign In / Register', desc: 'Create an account or sign in to unlock the interactive prototype. Strong password validation with live strength meter.', href: '/mediseg/login' },
+                { step: '02', title: 'Concept Deck', desc: 'Slide deck covering the SIH problem statement, methodology, and expected outcomes.', href: '/mediseg/presentation' }
               ].map((card, i) => (
                 <Link key={i} href={card.href}
                   className="glass-card rounded-2xl p-6 block transition-all duration-300 hover:-translate-y-1 hover:border-teal-500/40">

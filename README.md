@@ -34,11 +34,12 @@ npm run dev     # http://localhost:3000
 npm run build   # static export to ./out
 ```
 
-## User Guide
+## Documentation
 
-The complete LaTeX user guide lives at [`docs/UserGuide.tex`](docs/UserGuide.tex) —
-covers the login flow, every application page, the interactive simulation,
-developer setup, deployment, and troubleshooting. Compile with `pdflatex UserGuide.tex`.
+- **User Guide** — [`docs/UserGuide.tex`](docs/UserGuide.tex): login flow, every page, the interactive simulation, developer setup, deployment, troubleshooting.
+- **Implementation Report** — [`docs/ImplementationReport.tex`](docs/ImplementationReport.tex): complete, accurate account of everything implemented, from project start to live deployment.
+
+Compile either with `pdflatex <file>.tex`.
 
 ## Deploy
 

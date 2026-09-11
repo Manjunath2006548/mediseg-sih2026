@@ -1,0 +1,780 @@
+%===========================================================
+%  MediSeg — Implementation Report (Project Chronicle)
+%  Smart Mobile Medical-Waste Collection & Segregation System
+%  Autodesk · Smart India Hackathon 2026
+%
+%  "From beginning to end" — complete, accurate account of
+%  everything implemented for the MediSeg web solution.
+%
+%  Compile:  pdflatex ImplementationReport.tex
+%===========================================================
+\documentclass[11pt, a4paper]{article}
+
+%------------- Packages --------------
+\usepackage[margin=2.4cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[colorlinks=true, linkcolor=teal!75!black, urlcolor=teal!75!black]{hyperref}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec}
+
+%------------- Colours --------------
+\definecolor{mediseg}{HTML}{14b8a6}      % teal
+\definecolor{medisegdark}{HTML}{0f766e}  % deep teal
+\definecolor{slate}{HTML}{334155}
+\definecolor{codebg}{HTML}{f1f5f9}
+
+%------------- Page style --------------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{mediseg}{\textbf{MediSeg -- Implementation Report}}}
+\fancyhead[R]{\small\textcolor{slate}{SIH 2026 \textperiodcentered\ Autodesk}}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\headrulecolor{mediseg!60!white}
+
+%------------- Section titles --------------
+\titleformat{\section}
+  {\Large\bfseries\color{medisegdark}}
+  {\thesection}{0.8em}{}
+\titleformat{\subsection}
+  {\large\bfseries\color{slate}}
+  {\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}
+  {\normalsize\bfseries}
+  {\thesubsubsection}{0.6em}{}
+
+%------------- Listing style --------------
+\lstdefinestyle{cmd}{
+  language=bash,
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{medisegdark}\bfseries,
+  commentstyle=\color{gray},
+  showstringspaces=false,
+  frame=single,
+  rulecolor=\color{mediseg!30!white},
+  breaklines=true,
+  columns=fullflexible
+}
+\lstdefinestyle{code}{
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\small,
+  showstringspaces=false,
+  frame=single,
+  rulecolor=\color{mediseg!30!white},
+  breaklines=true,
+  columns=fullflexible
+}
+
+%------------- Boxes --------------
+\newtcolorbox{tipbox}{
+  colback=teal!8!white, colframe=mediseg,
+  title=\textbf{Note}, fonttitle=\bfseries, arc=3pt, boxrule=0.8pt
+}
+\newtcolorbox{warnbox}{
+  colback=orange!8!white, colframe=orange!85!black,
+  title=\textbf{Important}, fonttitle=\bfseries, arc=3pt, boxrule=0.8pt
+}
+\newtcolorbox{privacybox}{
+  colback=blue!6!white, colframe=blue!60!black,
+  title=\textbf{Security \& Credentials Policy}, fonttitle=\bfseries, arc=3pt, boxrule=0.8pt
+}
+
+%===========================================================
+\begin{document}
+
+%------------- Title --------------
+\begin{titlepage}
+\centering
+\vspace*{2.2cm}
+
+{\color{teal!50!white}\rule{\textwidth}{1pt}}\\[0.8em]
+{\Huge\bfseries\textcolor{mediseg}{MediSeg}}\\[0.5em]
+{\LARGE Smart Mobile Medical-Waste\\[0.3em] Collection \& Segregation System}\\[1.2em]
+{\color{teal!50!white}\rule{\textwidth}{1pt}}\\[2.2em]
+
+{\Large \textbf{Implementation Report}}\\[1.6em]
+{\large Complete account of the web solution --- from project start\\[0.2em]
+to live deployment, page by page and feature by feature}\\[3em]
+
+\begin{minipage}{0.75\textwidth}
+\centering
+\small
+Autodesk \textperiodcentered\ Smart India Hackathon 2026\\
+Repo: \url{https://github.com/Manjunath2006548/mediseg-sih2026}\\
+Live: \url{https://mediseg-sih2026.vercel.app}
+\end{minipage}
+
+\vfill
+{\small Version 1.0 \textperiodcentered\ September 2026}
+\end{titlepage}
+
+%------------- TOC --------------
+\tableofcontents
+\clearpage
+
+%===========================================================
+\section{Scope of This Document}
+
+This report records \textbf{everything that was implemented} for the MediSeg
+solution, in the order it was built (beginning to end). It is the single,
+accurate reference for:
+
+\begin{itemize}[leftmargin=1.6em, itemsep=2pt]
+  \item the project journey and its milestones,
+  \item the architecture, routes, and file structure,
+  \item every page and every interactive feature of the delivered web app,
+  \item the data model used by the simulator (waste types, capacity, IDs),
+  \item authentication behaviour and access control,
+  \item hosting, deployment, Git history, and contribution setup,
+  \item development and build commands.
+\end{itemize}
+
+\begin{privacybox}
+No credentials, account names for login, or example passwords are published in
+this report or anywhere in the repository. MediSeg is a client-side prototype:
+authentication is simulated in the browser and no secret material exists in the
+codebase. Any real deployment must add a proper authentication backend before
+release.
+\end{privacybox}
+
+%===========================================================
+\section{Problem Statement}
+
+\textbf{Organiser:} Autodesk \textperiodcentered\ \textbf{Hackathon:} Smart
+India Hackathon (SIH) 2026.
+
+The problem statement asks teams to design a
+\textit{``Smart Mobile Medical-Waste Collection and Segregation System''}.
+Hospital biomedical waste is hazardous to handle, is frequently mis-segregated,
+and exposes healthcare workers to pathogens and sharps. A compliant system must
+automate collection, sort waste into the legal categories, and keep a traceable
+record end to end.
+
+\subsection{Delivered approach}
+MediSeg replaces the manual pushcart with an \textbf{autonomous mobile rover} that:
+\begin{enumerate}[leftmargin=1.6em, itemsep=2pt]
+  \item navigates hospital areas autonomously (LiDAR/SLAM-style patrol),
+  \item recognises waste bags with an AI vision model (simulated YOLOv8, $98\,\%$),
+  \item drops each bag into the correct BMWM 2018 colour-coded compartment, and
+  \item records a QR-style chain of custody for regulatory compliance.
+\end{enumerate}
+
+%===========================================================
+\section{Project Journey (Beginning to End)}
+
+The following timeline reflects the actual order in which the work was done.
+
+\begin{enumerate}[leftmargin=1.6em, itemsep=4pt]
+  \item \textbf{Project origin.} Work started inside an existing Next.js~14
+        (App Router) frontend that had previously been used for another SIH
+        problem (an ISRO component-screening demo). A new section
+        \texttt{app/mediseg/*} was added so the new solution could be built
+        without disturbing the older pages.
+
+  \item \textbf{Concept deck first.} The first page created was the
+        presentation/concept deck at \texttt{/mediseg/presentation} to define
+        the problem, solution, design, impact, and roadmap.
+
+  \item \textbf{Interactive prototype.} The core deliverable, an interactive
+        autonomous-rover simulator, was built at \texttt{/mediseg}. It grew
+        into four linked panels (Robot View, AI Scanner, Segregation,
+        Tracking) plus login-gating.
+
+  \item \textbf{Local hosting and verification.} The static build was served on
+        \texttt{127.0.0.1:8000} with a Python HTTP server so the prototype
+        could be demonstrated locally; every route was verified with HTTP
+        checks.
+
+  \item \textbf{Camera idle-state fix.} The scanner's empty state was improved
+        to show ``Camera Live --- Awaiting Waste Intake'' with an inline
+        \emph{Generate Waste Now} action instead of a blank viewport.
+
+  \item \textbf{Introduction page.} A landing page at \texttt{/mediseg/intro}
+        was added (hero, capability cards, workflow steps, statistics, CTA).
+
+  \item \textbf{Login/register page.} A portal at \texttt{/mediseg/login} was
+        added with Sign In / Register tabs. One-click demo account buttons were
+        introduced and then \textbf{removed} on request so every user goes
+        through the normal form.
+
+  \item \textbf{Themed background.} A custom SVG background
+        (\texttt{mediseg-bg.svg}) was designed and applied to every page of the
+        solution for a consistent medical-tech look.
+
+  \item \textbf{Strong-password validation.} The Register flow gained a
+        five-rule strength checker with a live meter, required for account
+        creation.
+
+  \item \textbf{First deployment.} The combined Next.js app (ISRO pages +
+        MediSeg) was pushed to GitHub and deployed to Vercel
+        (\texttt{isro-burnin-detection.vercel.app}).
+
+  \item \textbf{Standalone repository.} On request, MediSeg was extracted into
+        its own repository (\texttt{mediseg-sih2026}) containing only the
+        MediSeg pages, its own portal home page, README, and background, and
+        deployed to its own Vercel project
+        (\texttt{mediseg-sih2026.vercel.app}).
+
+  \item \textbf{All-in-one portal.} The new home page presented the project
+        overview plus cards linking to every part of the demo.
+
+  \item \textbf{Git contribution setup.} Commit authorship across the Git
+        history was rewritten to the owner's GitHub identity (real verified
+        email) so the contribution graph reflects the work. Local Git
+        configuration was updated to carry the same identity.
+
+  \item \textbf{LaTeX user guide.} A complete user guide was written in
+        \LaTeX~(\texttt{docs/UserGuide.tex}) and committed with the README.
+
+  \item \textbf{Login-gated launch.} The portal was revised: the Introduction
+        card, the ``Launch Simulation'' button, and the direct prototype card
+        were removed. Users must now sign in before they can operate the
+        prototype (it is protected by an access gate).
+\end{enumerate}
+
+%===========================================================
+\section{Technology Stack}
+
+\begin{tabularx}{\textwidth}{lX}
+  \toprule
+  \textbf{Layer} & \textbf{Technology}\\
+  \midrule
+  Framework & Next.js 14.0.4 (App Router, \texttt{'use client'} pages)\\
+  UI library & React 18\\
+  Styling & Tailwind CSS 3.4 + custom CSS utilities in \texttt{globals.css}\\
+  Charts/visuals & Custom SVG animations (no chart library dependency)\\
+  Build mode & Static export (\texttt{output: 'export'}), no backend\\
+  Hosting & Vercel (production deployment)\\
+  Version control & Git / GitHub\\
+  Documentation & \LaTeX{} reports (\texttt{docs/UserGuide.tex}, this report)\\
+  \bottomrule
+\end{tabularx}
+
+\begin{tipbox}
+Because the output is fully static, the app runs with no server, no database,
+and no API keys. All state lives in the browser (React state +
+\texttt{localStorage}).
+\end{tipbox}
+
+%===========================================================
+\section{Application Routes}
+
+\begin{tabularx}{\textwidth}{lX}
+  \toprule
+  \textbf{Route} & \textbf{Page / Purpose}\\
+  \midrule
+  \texttt{/} & Portal -- project overview, modules, secure access cards\\
+  \texttt{/mediseg/intro} & Introduction -- problem, capabilities, workflow\\
+  \texttt{/mediseg/login} & Sign In / Register with strong-password check\\
+  \texttt{/mediseg} & Interactive prototype (login required to operate)\\
+  \texttt{/mediseg/presentation} & Concept deck (7 sections)\\
+  \bottomrule
+\end{tabularx}
+
+\subsection{Navigation map}
+\begin{itemize}[leftmargin=1.6em, itemsep=2pt]
+  \item \textbf{Portal} \texttt{/} $\rightarrow$ \texttt{/mediseg/login} (hero
+        button ``Login to Launch''), \texttt{/mediseg/presentation} (header),
+        \texttt{/mediseg/login} (secure-access cards).
+  \item \textbf{Intro} $\rightarrow$ \texttt{/mediseg/login}, \texttt{/mediseg/presentation},
+        \texttt{/}.
+  \item \textbf{Login} $\rightarrow$ \texttt{/mediseg} (after sign-in),
+        \texttt{/mediseg/intro}, \texttt{/mediseg/presentation}.
+  \item \textbf{Prototype} $\rightarrow$ \texttt{/mediseg/login} (logout /
+        access gate), \texttt{/mediseg/presentation} (header),
+        \texttt{/} (home), \texttt{/mediseg/intro} (gate screen).
+  \item \textbf{Concept deck} $\rightarrow$ \texttt{/}.
+\end{itemize}
+
+%===========================================================
+\section{Portal Page \texttt{/}}
+
+\subsection{Header}
+MediSeg wordmark with an ``MS'' gradient tile, subtitle
+``Autodesk \textperiodcentered\ SIH 2026''; header links to
+\textbf{Concept Deck} and \textbf{Login}.
+
+\subsection{Hero}
+\begin{itemize}[leftmargin=1.6em, itemsep=2pt]
+  \item Status badge: ``Smart Mobile Medical-Waste Collection \& Segregation System''.
+  \item Headline: \emph{``Autonomous Medical-Waste Logistics from Ward to
+        Treatment''}.
+  \item Tagline on the AI rover that transports, sorts, and tracks waste with
+        BMWM 2018 segregation and full-chain traceability.
+  \item Primary action \textbf{``Login to Launch''} $\rightarrow$
+        \texttt{/mediseg/login}; secondary ``View Modules'' scrolls to modules.
+\end{itemize}
+There is \textbf{no direct path to the prototype} from the portal.
+
+\subsection{Module cards (A and B)}
+\begin{tabularx}{\textwidth}{lX}
+  \toprule
+  \textbf{Module} & \textbf{Subsystems listed on the card}\\
+  \midrule
+  A -- Autonomous Navigation \& Collection &
+    A* path planning on facility map, obstacle avoidance (LiDAR), daily patrol
+    scheduling, auto-docking \& autonomous charging\\
+  B -- AI Waste Recognition \& Segregation &
+    YOLOv8 waste classification (98\,\%), 5 colour-coded compartments,
+    QR-code chain of custody, real-time compliance reporting\\
+  \bottomrule
+\end{tabularx}
+
+\subsection{Secure access section}
+Heading ``Launch the System'' states that the interactive simulator is only
+available to authenticated users. Button \textbf{``Sign In to Continue''}
+points to \texttt{/mediseg/login}. The section shows two cards:
+\begin{itemize}[leftmargin=1.6em, itemsep=2pt]
+  \item \textbf{01 Sign In / Register} -- create an account or sign in to
+        unlock the interactive prototype (strong-password validation with live
+        strength meter), $\rightarrow$ \texttt{/mediseg/login}.
+  \item \textbf{02 Concept Deck} -- SIH problem statement, methodology,
+        outcomes, $\rightarrow$ \texttt{/mediseg/presentation}.
+\end{itemize}
+
+%===========================================================
+\section{Introduction Page \texttt{/mediseg/intro}}
+
+A landing page presenting the concept to non-technical visitors.
+
+\subsection{Header}
+MediSeg wordmark; links ``Features'', ``How it works'', and a
+\textbf{Login / Launch} button.
+
+\subsection{Hero}
+Headline \emph{``Reimagining Biomedical Waste Management''}; description of the
+AI-powered, battery-electric autonomous rover. A visual grid shows the five
+colour-coded waste categories (Yellow, Red, Sharps, Glass, Chemical) and an
+``Autonomous Rover MS-01'' summary card (LiDAR + SLAM \textperiodcentered\
+YOLOv8 Vision \textperiodcentered\ 48V Electric \textperiodcentered\ IoT
+Telemetry).
+
+\subsection{Statistics band (4 stats)}
+100\,\% Automation \textperiodcentered{} 98\,\% AI Accuracy \textperiodcentered{}
+24/7 Operation \textperiodcentered{} 5 Compartment Types.
+
+\subsection{Core capabilities (6 feature cards)}
+\begin{tabularx}{\textwidth}{lX}
+  \toprule
+  \textbf{Feature} & \textbf{Description}\\
+  \midrule
+  Autonomous Navigation & LiDAR + SLAM patrol with obstacle avoidance\\
+  AI Vision Classification & YOLOv8 + CNN classification at 98\,\% accuracy\\
+  Smart Segregation & Rotating dispenser to colour-coded compartments (BMWM 2018)\\
+  Battery-Electric & Zero-emission 48V lithium pack, hot-swap bays, 24/7 operation\\
+  IoT Traceability & Every batch logged to cloud -- source, weight, type, operator\\
+  Zero-Touch Safety & HEPA-filtered airflow and UV decontamination\\
+  \bottomrule
+\end{tabularx}
+
+\subsection{Workflow (5 steps)}
+Collect $\rightarrow$ Classify $\rightarrow$ Segregate $\rightarrow$ Track
+$\rightarrow$ Dispose, each with a short explanation, plus a call-out inviting
+the user to log in to the interactive prototype.
+
+\subsection{CTA and footer}
+Buttons: \textbf{User Login}, \textbf{View Concept Deck}, \textbf{Home};
+footer credits.
+
+%===========================================================
+\section{Authentication \texttt{/mediseg/login}}
+
+\begin{warnbox}
+This page performs a \textbf{client-side simulation} of authentication for the
+demonstration. No password is ever transmitted or stored; nothing is written to
+any server. Do not reuse real credentials here, and never expose them in
+reports or documentation.
+\end{warnbox}
+
+\subsection{Mode tabs}
+Two tabs: \textbf{Sign In} and \textbf{Register}.
+
+\subsection{Registration (Register tab)}
+Fields and validation:
+\begin{itemize}[leftmargin=1.6em, itemsep=2pt]
+  \item \textbf{Full name} -- required (non-empty).
+  \item \textbf{Email} -- required, validated with a standard
+        \texttt{user@domain.tld} regular expression.
+  \item \textbf{Password} -- live strength checker with five rules:
+\end{itemize}
+\begin{enumerate}[leftmargin=1.6em, itemsep=2pt]
+  \item at least 8 characters,
+  \item at least one uppercase letter (A--Z),
+  \item at least one lowercase letter (a--z),
+  \item at least one digit (0--9),
+  \item at least one special character (\texttt{! @ \# \$ \%} and similar).
+\end{enumerate}
+\begin{itemize}[leftmargin=1.6em, itemsep=2pt]
+  \item A \textbf{password strength meter} with 5 segments and three levels:
+        Weak ($\leq$ 2 rules), Medium (3--4 rules), Strong (5 rules).
+  \item A live \textbf{checklist} of the five rules with check/empty indicators.
+  \item Registration is \textbf{rejected} if fewer than 4 of the 5 rules pass.
+  \item Optional \textbf{Role} selector: Facility Manager / Admin, Rover
+        Operator, QA / Compliance Officer.
+  \item Show/hide password toggle (\texttt{SHOW}/\texttt{HIDE}).
+  \item On success the session is stored in \texttt{localStorage}
+        (key \texttt{mediseg\_user}, value \{\texttt{name}, \texttt{email},
+        \texttt{role}\}), a confirmation is shown, and the page switches to
+        Sign In.
+\end{itemize}
+
+\subsection{Sign in (Sign In tab)}
+\begin{itemize}[leftmargin=1.6em, itemsep=2pt]
+  \item Email and password are required; a meaningful message is shown if
+        missing.
+  \item The display name is derived from the email prefix (capitalised).
+  \item The session is stored in \texttt{localStorage} under
+        \texttt{mediseg\_user} and the user is redirected to the prototype
+        \texttt{/mediseg}.
+\end{itemize}
+
+\subsection{Footer links}
+\texttt{$\leftarrow$ Back to Intro} and \texttt{Concept Deck $\rightarrow$}.
+
+%===========================================================
+\section{Session Handling \& Access Control}
+
+\begin{itemize}[leftmargin=1.6em, itemsep=2pt]
+  \item \textbf{Storage:} the session object \{\texttt{name}, \texttt{email},
+        \texttt{role}\} is kept in \texttt{localStorage['mediseg\_user']}.
+  \item \textbf{Persistence:} sessions survive page reloads within the browser.
+  \item \textbf{Prototype gate:} on load the prototype reads the stored user.
+        While access is being checked it shows a ``Verifying access\ldots''
+        spinner. If no user is found it renders an
+        \textbf{``Access Restricted''} screen with a \textbf{Sign In to
+        Continue} button that navigates to \texttt{/mediseg/login}.
+  \item \textbf{Logout:} clears the storage key and returns to
+        \texttt{/mediseg/login}.
+  \item The prototype header shows the signed-in user's avatar initial and name.
+\end{itemize}
+
+%===========================================================
+\section{Interactive Prototype \texttt{/mediseg}}
+
+This is the heart of the demonstration. Everything below is implemented in
+React on a single page split into four side-tabs.
+
+\subsection{Constant data model}
+\begin{tabularx}{\textwidth}{lX}
+  \toprule
+  \textbf{Constant} & \textbf{Value}\\
+  \midrule
+  Waste types & 5 (colour-coded, see \S\ref{sec:wastetypes})\\
+  Waste items & 15 sample items with weights (0.02--1.2 kg)\\
+  Container capacity & 60 L total, 12 L per compartment\\
+  Map nodes & 8 (see \S\ref{sec:map})\\
+  Packet/token ID & \texttt{MS-}\texttt{XXXX-}\texttt{NNNNN} (random + timestamp)\\
+  Ledger retention & 60 latest records (14 shown in the table)\\
+  \bottomrule
+\end{tabularx}
+
+\subsection{Waste types (BMWM 2018 colour coding)}
+\label{sec:wastetypes}
+\begin{longtable}{lXXXX}
+  \toprule
+  \textbf{ID} & \textbf{Colour} & \textbf{Category} & \textbf{Short name} & \textbf{Examples}\\
+  \midrule
+  \endfirsthead
+  \toprule
+  \textbf{ID} & \textbf{Colour} & \textbf{Category} & \textbf{Short name} & \textbf{Examples}\\
+  \midrule
+  \endhead
+  yellow & Yellow & Infectious / Pathological & Infectious &
+    soiling, anatomical, microbiological waste\\
+  red & Red & Contaminated Recyclable & Recyclable &
+    IV tubes, catheters, bottles\\
+  white & White / Sharps & Sharps & Sharps &
+    needles, scalpels, blades\\
+  blue & Blue & Glassware & Glass & broken / contaminated glass\\
+  black & Black & Chemical / Radioactive & Chemical &
+    solvents, reagents, pharmaceuticals\\
+  \bottomrule
+\end{longtable}
+
+\subsection{Hospital map nodes (floor plan)}
+\label{sec:map}
+\begin{itemize}[leftmargin=1.6em, itemsep=2pt]
+  \item Docking / Disposal, Emergency Ward, ICU, Operation Theater,
+        Pathology Lab, Pharmacy, Ward A, Ward B.
+  \item Represented as an SVG grid with corridors; the current node is
+        highlighted and pulsing.
+\end{itemize}
+
+\subsection{Top bar}
+\begin{itemize}[leftmargin=1.6em, itemsep=2pt]
+  \item Rover identity ``MEDISEG \textperiodcentered\ Autonomous Rover MS-01''
+        with an \textbf{ONLINE} badge; subtitle ``Battery-Electric
+        \textperiodcentered\ AI Vision Nav \textperiodcentered\ SIH 2026''.
+  \item \textbf{WiFi link} indicator; \textbf{battery} readout with bar
+        (starts at 94\,\%).
+  \item \textbf{View Concept Deck} link; signed-in \textbf{user chip}
+        (initial + name); \textbf{Logout}; \textbf{Home} link.
+\end{itemize}
+
+\subsection{Alert flash bar}
+Contextual banner below the top bar with three kinds: success (emerald),
+danger (red), info (blue). Danger alerts also drain the battery a little.
+
+\subsection{Sidebar}
+\begin{itemize}[leftmargin=1.6em, itemsep=2pt]
+  \item \textbf{Tabs:} Robot View, AI Scanner, Segregation, Tracking.
+  \item \textbf{Live stats:} items collected, total weight (kg), AI accuracy
+        (\,\%), capacity used (\,\%).
+  \item \textbf{Simulation controls:}
+    \begin{itemize}[leftmargin=1.6em, itemsep=2pt]
+      \item \texttt{Generate Waste} (manual single scan; labelled
+            ``Processing\ldots'' while busy),
+      \item \texttt{Auto-Collect Toggle} (periodic scans; becomes red Stop),
+      \item \textbf{speed slider} (0.5$\times$ -- 3$\times$, steps of 0.5),
+      \item sensor status list: Obstacle Sensor OK, LiDAR Mapping Active,
+            Airborne HEPA Filter.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Robot View tab}
+\begin{itemize}[leftmargin=1.6em, itemsep=2pt]
+  \item \textbf{Telemetry cards (4):} Current Location, Waste Compartments
+        (active/5), Total Load (kg), Collection Trips.
+  \item \textbf{SVG floor plan:} 10$\times$10 millimetre grid, corridor bands,
+        8 room nodes, an animated rover \texttt{ROV-MS1} with a blinking beacon.
+        The rover cycles the nodes, changing position at
+        $1400\,ms \div \text{speed}$; each full lap increments the trips counter.
+      \textbf{Start Route / Pause Route} and \textbf{Recharge} (\texttt{+40}\,\%
+        battery, capped at 100\,\%) buttons.
+  \item \textbf{Compartment live fill:} five mini fill meters with item counts.
+\end{itemize}
+
+\subsection{AI Scanner tab}
+\begin{itemize}[leftmargin=1.6em, itemsep=2pt]
+  \item Badges: \textbf{AI Vision Classifier}, ``YOLOv8 \textperiodcentered\
+        Object detection $\rightarrow$ CNN classification'', and an
+        \textbf{INTEGRITY 98\,\%} badge.
+  \item \textbf{Camera viewport} with four states:
+    \begin{enumerate}[leftmargin=1.6em, itemsep=2pt]
+      \item \emph{Idle}: ``Camera Live --- Awaiting Waste Intake'' with a
+            \textbf{Generate Waste Now} button,
+      \item \emph{Detect}: pulsing scan frame with corner brackets and a
+            spinner,
+      \item \emph{Classify}: confidence bars for all five categories
+            (true class highlighted, competitors discounted),
+      \item \emph{Segregate}: routing animation to the target compartment
+            (colour pill + floating dots).
+    \end{enumerate}
+  \item \textbf{Scan pipeline timing} (scaled by speed): detect at 0 ms,
+        classify at $600\,ms$, segregate at $1300\,ms$, completion at
+        $2100\,ms$.
+  \item \textbf{Credibility model:} confidence drawn uniformly from
+        0.92--0.985; a 2\,\% misclassification probability sends the item to
+        the yellow (infectious) bin regardless of its true type --- this powers
+        the live accuracy metric.
+  \item \textbf{Waste catalogue (15 items)}: each item is a button (label,
+        category colour dot, weight) that triggers a manual scan for exactly
+        that item.
+  \item \textbf{Model output -- traceability card:} shows the latest record's
+        Batch ID, Source, Operator, destination compartment, and timestamp.
+\end{itemize}
+
+\subsection{Segregation tab}
+\begin{itemize}[leftmargin=1.6em, itemsep=2pt]
+  \item Header: ``5 color-coded compartments per BMWM Rules 2018'' and a total
+        capacity bar (\texttt{XX\% / 60\,L}).
+  \item \textbf{Per-compartment card:} colour accent, emoji, short/long name,
+        litres used, animated fill bar, item and weight counters, remaining
+        litres, ``Disposer Ready'' status, and a pulsing
+        \textbf{NEAR FULL} badge above 80\,\%.
+  \item \textbf{Robotic Dispenser card:} rotating-carousel, zero-contact
+        routing concept with the five colour chips.
+\end{itemize}
+
+\subsection{Tracking tab}
+\begin{itemize}[leftmargin=1.6em, itemsep=2pt]
+  \item \textbf{Stat cards (4):} Items Collected, Total Weight, AI Accuracy,
+        Compliance Logs.
+  \item \textbf{End-to-end traceability ledger:} table columns Batch ID, Item,
+        Classified (colour chip), $\rightarrow$ Compartment, Weight, Source,
+        Operator, Time. Correct segregation is visually indicated. Empty state
+        prompts the user to run the scanner.
+  \item \textbf{Compliance report (BMWM Rules 2018):} six checks, each with a
+        $\checkmark$/$\circ$:
+    \begin{enumerate}[leftmargin=1.6em, itemsep=2pt]
+      \item Segregation at Source (AI-verified),
+      \item Colour-Coded Bags (all five classes),
+      \item Digital Manifest (export-ready for CPCB portal),
+      \item Tracking to Treatment (dock-to-treatment chain),
+      \item No Manual Contact (zero-touch handling),
+      \item Decontamination (HEPA airflow + UV cycle).
+    \end{enumerate}
+\end{itemize}
+
+\subsection{Micro-behaviours worth noting}
+\begin{itemize}[leftmargin=1.6em, itemsep=2pt]
+  \item Battery drains $0.02 \times \text{speed}$ per patrol step (floor 10\,\%)
+        and drops $0.2$--$0.6$ on danger alerts (floor 12\,\%).
+  \item Auto-collect scans every $2200\,ms \div \text{speed}$.
+  \item Ledger entry fields: id, item, type, typeName, binId, binName, weight,
+        time, source (current map node), operator
+        ``Autonomous Rover MS-01''.
+  \item Live accuracy $=$ accurate $\div$ classified; capacity $=$
+        litres $\div$ 60\,L.
+\end{itemize}
+
+%===========================================================
+\section{Concept Deck \texttt{/mediseg/presentation}}
+
+A single scrolling slide deck with seven sections.
+
+\begin{longtable}{lX}
+  \toprule
+  \textbf{Slide} & \textbf{Content delivered}\\
+  \midrule
+  \endfirsthead
+  \toprule
+  \textbf{Slide} & \textbf{Content delivered}\\
+  \midrule
+  \endhead
+  01 -- Title & Problem title and subtitle; ``Team Autodesk Innovators''; SIH 2026 tag\\
+  02 -- Problem Statement & 5 challenge points (2M t biomedical waste/yr in India, staff exposure,
+    ~30\,\% source segregation, BMWM Rules 2016 compliance, human-error contamination) and a highlight\\
+  03 -- Our Solution & AI battery-electric robot automating the whole lifecycle; 6 feature tiles
+    (navigation, vision, segregation, battery, IoT tracking, safety)\\
+  04 -- How It Works & Collect $\rightarrow$ Classify $\rightarrow$ Segregate $\rightarrow$ Track $\rightarrow$ Dispose\\
+  05 -- Key Design Features & 8 engineering specs: ABS+steel body, 60\,L capacity, RGB-D+LiDAR+load
+    cells+RFID, dual brushless drive, 48V swappable battery, custom YOLOv8 ($\sim$0.94 mAP),
+    Wi-Fi+4G IoT, E-stop safety\\
+  06 -- Impact \& Benefits & 6 metrics: 100\,\% automation, 94\,\% segregation accuracy, 2$\times$
+    faster collection, 100\,\% traceability, $-$40\,\% infection risk, zero compromise\\
+  07 -- Roadmap & 6 phases via Autodesk Fusion: concept, 3D CAD, simulation (FEA/motion),
+    generative design, manufacturing/DFM, scale \& deploy\\
+  \bottomrule
+\end{longtable}
+
+Footer CTA links back home.
+
+%===========================================================
+\section{Themed Background (\texttt{mediseg-bg.svg})}
+
+A custom 1600$\times$1080 SVG applied to all MediSeg pages with a dark
+overlay for readability. Its elements match the brand:
+
+\begin{itemize}[leftmargin=1.6em, itemsep=2pt]
+  \item deep teal gradient field \texttt{\#04100d $\rightarrow$ \#06251e} with a
+        central radial glow,
+  \item subtle engineering grid overlay,
+  \item a top-down rover silhouette with the \textbf{five colour-coded
+        compartments} (yellow, red, white, blue, black),
+  \item sensor turret with a pulsing beacon and a \textbf{LiDAR sweep arc},
+  \item orbital patrol rings and way-point circles
+        (navigation theme) with nominal trace lines,
+  \item medical cross accents and a \textbf{QR / data-hash block}
+        (traceability theme),
+  \item corner registration marks.
+\end{itemize}
+
+%===========================================================
+\section{File Structure (Standalone Repository)}
+
+\begin{lstlisting}[style=cmd]
+mediseg-sih2026/
+|-- app/
+|   |-- page.js                       # portal (/) -- login-gated entries
+|   |-- layout.js                     # root layout + metadata
+|   |-- globals.css                   # Tailwind + custom utilities
+|   `-- mediseg/
+|       |-- page.js                   # interactive prototype (login gate)
+|       |-- intro/page.js             # introduction page
+|       |-- login/page.js             # login / register + password checker
+|       `-- presentation/page.js      # concept deck (7 sections)
+|-- public/
+|   `-- images/mediseg-bg.svg         # themed background
+|-- docs/
+|   |-- UserGuide.tex                 # LaTeX user guide
+|   `-- ImplementationReport.tex      # this document
+|-- README.md                         # project readme (links + features)
+|-- next.config.js                    # static export (output: 'export')
+|-- tailwind.config.js                # design tokens (isro palette)
+|-- postcss.config.js
+|-- package.json                      # next 14.0.4, react 18, recharts, tailwind
+`-- .gitignore
+\end{lstlisting}
+
+%===========================================================
+\section{Build, Run, and Deploy}
+
+\subsection{Locally}
+\begin{lstlisting}[style=cmd]
+npm install      # install dependencies
+npm run dev      # dev server on http://localhost:3000
+npm run build    # static export written to ./out
+\end{lstlisting}
+
+\subsection{Vercel}
+\begin{lstlisting}[style=cmd]
+vercel --prod --yes
+\end{lstlisting}
+
+\subsection{Static host (e.g. Netlify, GitHub Pages, Nginx)}
+\begin{enumerate}[leftmargin=1.6em, itemsep=2pt]
+  \item run \texttt{npm run build},
+  \item publish the contents of \texttt{out/}.
+\end{enumerate}
+
+%===========================================================
+\section{Git History \& Contribution Setup}
+
+\begin{itemize}[leftmargin=1.6em, itemsep=2pt]
+  \item Repositories:
+    \begin{itemize}[leftmargin=1.6em, itemsep=2pt]
+      \item \texttt{mediseg-sih2026} -- standalone MediSeg solution
+            (\url{https://github.com/Manjunath2006548/mediseg-sih2026}),
+      \item \texttt{maverick-sih2026} -- original combined app in which
+            MediSeg was first developed
+            (\url{https://github.com/Manjunath2006548/maverick-sih2026}).
+    \end{itemize}
+  \item Commit authorship was rewritten so that every commit is attributed to
+        the account owner (name and verified email), making all work appear on
+        the GitHub contribution graph. The same identity is set in local Git
+        configuration for future commits.
+  \item Branch: \texttt{main}; remote is \texttt{origin}.
+\end{itemize}
+
+%===========================================================
+\section{Deployment History}
+
+\begin{tabularx}{\textwidth}{lX}
+  \toprule
+  \textbf{Project} & \textbf{Production URL}\\
+  \midrule
+  MediSeg (standalone) & \url{https://mediseg-sih2026.vercel.app}\\
+  Combined app (original) & \url{https://isro-burnin-detection.vercel.app}\\
+  \bottomrule
+\end{tabularx}
+
+Primary live entry point for the deliverable:
+\url{https://mediseg-sih2026.vercel.app}.
+
+%===========================================================
+\section{Future Work / Production Readiness}
+
+\begin{itemize}[leftmargin=1.6em, itemsep=2pt]
+  \item Replace the simulated authentication with a real identity provider and
+        role-based access control (no credentials in code or docs).
+  \item Connect the AI classifier to a deployed vision model endpoint instead
+        of the simulated pipeline.
+  \item Persist the traceability ledger to a database/cloud store and generate
+        real CPCB-style digital manifests.
+  \item Wire the simulator to live telemetry (MQTT/IoT gateway) for a physical
+        prototype.
+\end{itemize}
+
+\end{document}

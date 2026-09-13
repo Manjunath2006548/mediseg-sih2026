@@ -1,0 +1,372 @@
+%===========================================================
+%  MEDISEG — 24-Hour Grand Finale Strategy & Idea-PPT Review
+%  Slide-by-slide (1–6) with expected questions & answers
+%
+%  Compile:  pdflatex Hackathon24hrPlan.tex
+%===========================================================
+\documentclass[11pt, a4paper]{article}
+
+%------------- Packages --------------
+\usepackage[margin=2.2cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage[colorlinks=true, linkcolor=teal!75!black, urlcolor=teal!75!black]{hyperref}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+
+%------------- Colours --------------
+\definecolor{mediseg}{HTML}{14b8a6}
+\definecolor{medisegdark}{HTML}{0f766e}
+\definecolor{slate}{HTML}{334155}
+
+%------------- Page style --------------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{mediseg}{\textbf{MediSeg -- 24h Strategy \& PPT Review}}}
+\fancyhead[R]{\small\textcolor{slate}{SIH 2026 \textperiodcentered\ Autodesk}}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\headrulecolor{mediseg!60!white}
+
+%------------- Boxes --------------
+\newtcolorbox{qabox}{
+  colback=teal!6!white, colframe=mediseg, arc=3pt, boxrule=0.8pt
+}
+\newtcolorbox{flagbox}{
+  colback=amber!12!white, colframe=orange!85!black,
+  title=\textbf{Action Needed}, fonttitle=\bfseries, arc=3pt, boxrule=0.8pt
+}
+\newtcolorbox{warnbox}{
+  colback=red!6!white, colframe=red!70!black,
+  title=\textbf{Rule Reminder}, fonttitle=\bfseries, arc=3pt, boxrule=0.8pt
+}
+
+\setlength{\parskip}{3pt}
+
+\begin{document}
+
+%------------- Title --------------
+\begin{titlepage}
+\centering
+\vspace*{2.4cm}
+{\color{teal!50!white}\rule{\textwidth}{1pt}}\\[0.8em]
+{\Huge\bfseries\textcolor{mediseg}{MediSeg}}\\[0.5em]
+{\LARGE 24-Hour Grand Finale Strategy}\\[1.2em]
+{\Large \& Idea-PPT Review (Slides 1--6)}\\[0.4em]
+{\color{teal!50!white}\rule{\textwidth}{1pt}}\\[3em]
+{\large Six-phase execution plan for the 24-hour hackathon window,\\[0.3em]
+plus a slide-by-slide audit of the submitted idea deck with\\[0.3em]
+expected judge questions and model answers.}\\[3.5em]
+
+{\small Team \textbf{Maverick} \textperiodcentered\ PS ID \textbf{SIH26115}}
+\vfill
+{\small Version 1.0 \textperiodcentered\ September 2026}
+\end{titlepage}
+
+\tableofcontents
+\clearpage
+
+%===========================================================
+\section{Reality Check: ``We have done 100\%''}
+
+What is already \textbf{complete}:
+\begin{itemize}[leftmargin=1.6em, itemsep=2pt]
+  \item 6-slide idea PPT (Basic Details, Innovation, Technical Approach,
+        Feasibility, Impact, References).
+  \item Fully working client-side web prototype (portal, intro, login,
+        interactive simulator, concept deck) deployed on Vercel.
+  \item Strong-password gate, BMWM 2018 segregation simulation, traceability
+        ledger, compliance report.
+  \item LaTeX user guide and implementation report.
+  \item Proper Git contribution setup (both repositories on the owner's GitHub
+        identity).
+\end{itemize}
+
+What still belongs to the \textbf{24-hour window} (per the rules, the Fusion
+product design may \emph{only} be created during the Grand Finale):
+\begin{itemize}[leftmargin=1.6em, itemsep=2pt]
+  \item The full Autodesk Fusion model (no pre-designed files allowed).
+  \item Generative Design study, Simulation/FEA, Motion Study, Exploded
+        Assembly, hi-res renders.
+  \item Public link of the finished Fusion model.
+  \item Final-project PPT upgrades and live demo polish.
+  \item Submission package: marking-criteria table, faculty (SIH SPOC) form.
+\end{itemize}
+
+%===========================================================
+\section{The 24-Hour Plan -- Six Phases}
+
+\begin{tabularx}{\textwidth}{llX}
+  \toprule
+  \textbf{Phase} & \textbf{Timeline} & \textbf{Objective / Key actions}\\
+  \midrule
+  1 & Hours 0--1 & \textbf{Environment \& Orientation.} Confirm Fusion access for
+    all members, open the Vercel demo and code repos, assign roles (CAD lead,
+    simulation lead, presentation lead, demo operator). Snapshot of the
+    \emph{done} deliverables so nothing is re-worked.\\
+  \midrule
+  2 & Hours 1--5 & \textbf{Fusion Core Design.} Parametric design of the rover:
+    chassis, body, 5-compartment drum, rotating dispenser, drive module.
+    Keep everything inside Fusion cloud only. Update design timeline in the
+    model parameters.\\
+  \midrule
+  3 & Hours 5--8 & \textbf{Simulation + Generative Design.} FEA load study on
+    chassis and drum rack; generative design study for structural
+    optimization; capture results snapshots.\\
+  \midrule
+  4 & Hours 8--12 & \textbf{Motion, Assembly, Renders.} Joints + motion study
+    (patrol/dumping animation), exploded assembly view, high-resolution
+    renders (studio lighting).\\
+  \midrule
+  5 & Hours 12--16 & \textbf{Final Project PPT + Demo.} Upgrade idea deck into
+    the Grand-Finale PPT: problem, solution, Fusion evidence, business model;
+    screen-record the live web prototype; generate the public Fusion share
+    link; insert marking-criteria table.\\
+  \midrule
+  6 & Hours 16--20/24 & \textbf{Rehearsal, Q\&A Drills, Submission.} Full
+    run-through (6 min talk + live demo), judge Q\&A practice using the
+    questions in Part~II, verify public link and uploads, submit; keep the
+    remaining hours as a buffer for Vercel/link/app fixes.\\
+  \bottomrule
+\end{tabularx}
+
+\begin{flagbox}
+Time-box each phase. Finish with at least 2--4 buffer hours. Pre-load Fusion
+tutorials and keyboard shortcuts to avoid mid-hackathon learning pauses.
+\end{flagbox}
+
+\begin{warnbox}
+\textbf{Rules that never change during the 24 hours:}
+\begin{itemize}[leftmargin=1.6em, itemsep=1pt]
+  \item No pre-designed design files -- the Fusion model must be created only
+        inside the Grand Finale window using Autodesk Fusion.
+  \item The submitted design must not be copied/taken from another source.
+  \item AI-generated content is not allowed in the submitted work -- the PPT,
+        sketches, and Fusion model must be authored by the team.
+\end{itemize}
+\end{warnbox}
+
+%===========================================================
+\section{Idea-PPT Review -- Slide by Slide (1--6)}
+
+For each slide: what it contains, a quick quality check, and
+\textbf{expected judge questions with model answers}.
+
+\subsection{Slide 1 -- Basic Details}
+\textbf{On the slide:} PS ID SIH26115, PS Title ``Design and Develop a Smart
+Mobile Medical-Waste Collection and Segregation System'', Theme
+MedTech / BioTech / HealthTech, PS Category Software, Team \emph{Maverick}.
+\begin{flagbox}
+Add the \textbf{Team ID} and the names/leader of all members; double-check the
+PS ID and category match the official listing.
+\end{flagbox}
+
+\begin{qabox}
+\textbf{Q1.} What is your problem-statement ID and category?\\
+\textbf{A1.} SIH26115, Software category -- a simulation-first solution built
+with a modern web stack, supported by an Autodesk Fusion hardware design.
+
+\textbf{Q2.} The problem mentions an \emph{Autodesk Fusion} product lifecycle --
+why is your PS category ``Software''?\\
+\textbf{A2.} For the idea stage we deliver a fully working software simulation
+(no design files are allowed before the Grand Finale). The physical product
+design is built from scratch in Autodesk Fusion during the finale, satisfying
+the full concept-to-manufacturing lifecycle.
+
+\textbf{Q3.} Who is your team?\\
+\textbf{A3.} Team Maverick --- [name each member and role, Team ID].
+\end{qabox}
+
+\subsection{Slide 2 -- Innovation and Uniqueness}
+\textbf{On the slide:} 5 challenges (hazardous manual handling, improper
+segregation/human error, autonomous hospital navigation, AI recognition and
+correct segregation, end-to-end traceability/compliance); 5 proposed-solution
+capsules (simulated LiDAR/SLAM patrol, AI vision scanner with 15 items and
+YOLOv8 classification logic, virtual BMWM 2018 segregation engine, digital
+traceability ledger, client-side security/access gate); 4 ``how it addresses
+the problems'' points.
+
+\textbf{Check:} strong innovation story -- autonomous rover \emph{plus}
+legally-compliant segregation \emph{plus} no-infrastructure deployment.
+
+\begin{qabox}
+\textbf{Q1.} How is your solution different from existing waste pushcarts?\\
+\textbf{A1.} It replaces manual handling with an autonomous, battery-electric
+rover that navigates autonomously, classifies waste with AI vision, routes it
+into the five BMWM 2018 colour-coded compartments, and records a digital chain
+of custody -- all while being a zero-infrastructure, client-side application.
+
+\textbf{Q2.} The AI scanner is a \emph{simulation} -- is that enough?\\
+\textbf{A2.} At the idea stage we simulate YOLOv8 + CNN classification with a
+confidence model to prove the logic and the UI. The production path uses an
+on-device YOLO model; the Fusion product design includes the camera/vision
+mount and compute to realise it.
+
+\textbf{Q3.} Why build it fully client-side with no backend?\\
+\textbf{A3.} Instant deployment on any static host, zero server cost, data
+stays local (privacy), and it scales horizontally across hospital networks;
+the optional IoT telemetry layer can be added later without re-building the UI.
+\end{qabox}
+
+\subsection{Slide 3 -- Technical Approach}
+\textbf{On the slide:} ``Technology Stack / User Interface'' (the stack grid is
+image-based -- no extractable text) and a 4-step Methodology and Process.
+
+\begin{flagbox}
+\textbf{Verify the stack grid visually.} It should list: Next.js 14 (App
+Router), React 18, Tailwind CSS 3.4, static export
+(\texttt{output: 'export'}), Vercel (deploy), Git/GitHub (versioning). If any
+of these are missing on the slide, add them -- judges expect the stack.
+\end{flagbox}
+
+\begin{qabox}
+\textbf{Q1.} Why Next.js static export instead of a server?\\
+\textbf{A1.} Static export gives a fast, portable, server-free app that can be
+hosted anywhere (Vercel, Netlify), keeps costs near zero, and is inherently
+scalable -- ideal for a demo that must also be production-lean.
+
+\textbf{Q2.} How does classification work at runtime?\\
+\textbf{A2.} A confidence model draws classification certainty and a 2\,\%
+misclassification trigger routes waste to the safe (infectious) bin as a
+fail-safe; the pipeline animates detect $\rightarrow$ classify $\rightarrow$
+segregate stages. In production this becomes a real YOLO model on edge
+hardware.
+
+\textbf{Q3.} What about security?\\
+\textbf{A3.} A reviewable client-side gate protects the prototype: a
+five-rule strong-password validator (length, upper, lower, digit, special)
+and a session stored in the browser. A production release would add a
+real authentication backend.
+\end{qabox}
+
+\subsection{Slide 4 -- Feasibility and Viability}
+\textbf{On the slide:} the content is visual (graphics/icons) with no
+extractable text.
+\begin{flagbox}
+\textbf{Check the graphics are legible.} Ensure the slide clearly shows the
+four feasibility pillars (technical, operational, financial, regulatory).
+If the current graphic is unclear, replace with a simple four-quadrant table
+-- substance over decoration.
+\end{flagbox}
+
+\begin{qabox}
+\textbf{Q1.} Is this feasible without real hardware?\\
+\textbf{A1.} For the idea stage, yes -- the simulation is complete and
+deployed. The Fusion design in the finale demonstrates manufacturability with
+focus on cost, materials (ABS+steel), and serviceability (hot-swap battery).
+
+\textbf{Q2.} Financial viability?\\
+\textbf{A2.} Subscription SaaS tiered by facility beds and transaction volume,
+plus enterprise licensing for regulators; low marginal cost because the
+software is static-cloud and the hardware is a commodity electric platform.
+
+\textbf{Q3.} Regulatory viability?\\
+\textbf{A3.} Built directly on BMWM 2018 colour-coding and produces a
+CPCB-ready digital manifest with an auditable, cradle-to-grave ledger.
+\end{qabox}
+
+\subsection{Slide 5 -- Impact and Benefits}
+\textbf{On the slide:} Business Model (target customers, value-added services,
+scalability, financial model) and four audience impacts (hospital
+administrators, healthcare workers/sanitation staff, regulators CPCB/state
+boards, engineering students/evaluators).
+
+\textbf{Check:} strong customer framing; consider adding a headline impact
+statistic (e.g., ``$\sim$98\,\% classification, zero-touch handling,
+40\,\% lower infection risk target'').
+
+\begin{qabox}
+\textbf{Q1.} Who is your customer and how do you make money?\\
+\textbf{A1.} Hospitals and biomedical-waste operators needing BMWM 2018
+compliance; regulators needing audit trails. Revenue via tiered SaaS
+subscriptions and enterprise licensing for regulatory boards.
+
+\textbf{Q2.} What concrete impact do you claim?\\
+\textbf{A2.} Reduced manual touchpoints and needle-stick risk for sanitation
+staff, fewer non-compliance penalties for hospitals, transparent verifiable
+audits for regulators, and a reusable reference architecture for builders of
+simulation tools.
+
+\textbf{Q3.} How do you prove the impact metrics?\\
+\textbf{A3.} The live dashboard reports accuracy, capacity, and compliance
+checks in real time; the ledger gives measurable audit evidence. Pilot
+evidence targets would follow in a hospital trial.
+\end{qabox}
+
+\subsection{Slide 6 -- Research and References}
+\textbf{On the slide:} a sample UI image developed by the team, and three
+references (PRISMA systematic review on real-time tracking technologies in
+biomedical waste management; AI-powered biomedical segregation and recycling
+with IoT; IoT-enabled biomedical smart waste bin monitoring using YOLO).
+
+\textbf{Check:} confirm the three links are accessible and ready for judges;
+keep the sample-UI image crisp.
+
+\begin{qabox}
+\textbf{Q1.} What research informed your design?\\
+\textbf{A1.} The PRISMA review guided our tracking/traceability architecture;
+the IoT-YOLO bin-monitoring paper validated vision-based waste
+classification; the AI-segregation study informed the compartment routing
+logic -- combined with BMWM 2018 regulatory requirements.
+
+\textbf{Q2.} Which reference did you learn the most from and why?\\
+\textbf{A2.} The IoT-enabled YOLO monitoring study, because it confirmed that
+real-time computer vision can drive accurate waste categorisation at the
+source -- directly supporting our camera-scan pipeline.
+
+\textbf{Q3.} Is there a competitive analysis?\\
+\textbf{A3.} Our positioning: existing solutions cover monitoring or bins
+separately; MediSeg unifies autonomous collection, AI classification,
+segregation, and audit traceability in a single no-infrastructure platform.
+\end{qabox}
+
+%===========================================================
+\section{Marking Criteria -- Proposed Framework}
+
+The statement requires a marking-criteria table to be attached. Confirm
+against the official SIH 2026 rubric, then insert into the idea form/PPT.
+
+\begin{tabularx}{\textwidth}{lcc}
+  \toprule
+  \textbf{Criterion} & \textbf{Weight} & \textbf{Covered in our deck}\\
+  \midrule
+  Problem understanding & 15 & Slide 2 --- challenges\\
+  Innovation \& uniqueness & 20 & Slide 2 --- solution capsules\\
+  Technical approach & 20 & Slide 3 --- stack + methodology\\
+  Feasibility \& viability & 15 & Slide 4 --- feasibility pillars\\
+  Impact \& benefits & 15 & Slide 5 --- business model + audience\\
+  Presentation \& communication & 10 & Slides 1, 6 + live demo\\
+  Regulatory alignment & 5 & BMWM 2018, CPCB manifest\\
+  \midrule
+  \textbf{Total} & \textbf{100} & \\
+  \bottomrule
+\end{tabularx}
+
+\begin{flagbox}
+Verify the weights against the official SIH 2026 marking criteria before
+attaching; this is a proposed framework only.
+\end{flagbox}
+
+%===========================================================
+\section{Submission Checklist}
+
+\begin{itemize}[leftmargin=1.6em, itemsep=2pt]
+  \item 6--7 slide idea PPT (complete) with conceptual sketches, research,
+        and images.
+  \item Attached marking-criteria table.
+  \item Faculty (SIH SPOC) mandatory form requested and confirmed.
+  \item Grand Finale (24h): Fusion model created fresh inside the event,
+        public share link generated, generative design + simulation + motion +
+        exploded view + hi-res renders captured.
+  \item Final-project PPT and recorded demo exported; live link verified
+        (\url{https://mediseg-sih2026.vercel.app}).
+  \item No pre-designed files; no AI-generated content in submitted work.
+\end{itemize}
+
+\end{document}

@@ -170,6 +170,39 @@ MediSeg replaces the manual pushcart with an \textbf{autonomous mobile rover} th
   \item records a QR-style chain of custody for regulatory compliance.
 \end{enumerate}
 
+\subsection{Alignment with the official problem statement}
+The table below maps every requirement of the official Autodesk SIH 2026
+problem statement to its coverage inside MediSeg.
+
+\begin{tabularx}{\textwidth}{lX}
+  \toprule
+  \textbf{Requirement} & \textbf{Coverage in MediSeg}\\
+  \midrule
+  AI-powered autonomous mobile system &
+    Autonomous rover MS-01 with an onboard vision stack and autonomy layer\\
+  Battery-electric &
+    48\,V lithium pack, hot-swap bays, zero-emission operation\\
+  Automated collection &
+    LiDAR/SLAM-style patrol and auto-collect simulation across the facility map\\
+  Automated identification &
+    YOLOv8 + CNN vision classification at $\sim$98\,\% accuracy\\
+  Automated segregation &
+    5 colour-coded BMWM 2018 compartments with zero-touch routing\\
+  Digital tracking &
+    QR chain-of-custody ledger and real-time compliance report\\
+  Minimise human exposure &
+    Robotic dispenser (no manual contact), HEPA airflow and UV decontamination\\
+  Regulatory compliance &
+    BMWM 2018 segregation, CPCB-ready digital manifest, 6-check report\\
+  Autodesk Fusion product lifecycle &
+    Roadmap slide: concept ideation $\rightarrow$ 3D CAD $\rightarrow$
+    simulation (FEA/motion) $\rightarrow$ generative design $\rightarrow$
+    manufacturing / DFM $\rightarrow$ scale \& deploy. Per the guidelines the
+    Fusion design is built only at the Grand Finale, so no design files exist
+    at the idea stage\\
+  \bottomrule
+\end{tabularx}
+
 %===========================================================
 \section{Project Journey (Beginning to End)}
 
